@@ -1,19 +1,21 @@
+import timm
 import torch
 import torchvision
 import torchvision.transforms as transforms
-import timm
 from torch import nn, optim
-from torchvision.datasets import CIFAR10
 from torch.utils.data import DataLoader
+from torchvision.datasets import CIFAR10
 from tqdm import tqdm
-from utils import data
+
 from models import model
+from utils import data
+
 # .data_loader as data_loader
 # .vgg16_model as vgg16_model
 
 trainloader, testloader = data.data_loader()
 
-model  = model.ConvNet()
+model = model.ConvNet()
 if torch.cuda.is_available():
     model = model.cuda()
 
@@ -21,7 +23,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 
-for epoch in range(2):  # loop over the dataset multiple times
+for epoch in range(10):  # loop over the dataset multiple times
     running_loss = 0.0
     for i, data in tqdm(enumerate(trainloader, 0)):
         inputs, labels = data
@@ -54,5 +56,5 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print(f'Accuracy of the network on the 10000 test images: {100 * correct // total}%')
-
+print(
+    f'Accuracy of the network on the 10000 test images: {100 * correct // total}%')
